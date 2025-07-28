@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import type { Task } from "./components/types/task";
 import { TaskForm } from "./components/TaskForm";
-import axios from "axios";
+import noteService from "./services/tasks";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([
@@ -15,25 +15,34 @@ function App() {
   const [filter, setFilter] = useState<string>("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/todos").then((res) => {
-      setTasks(res.data);
+    noteService.get().then((initialTasks: Task[]) => {
+      setTasks(initialTasks);
     });
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newTodo: Task = {
+    const newTask: Task = {
       id: tasks.length + 1,
       task: task,
       date: date,
     };
 
-    const existingTask = tasks.find((t) => t.task === task && t.date === date);
+    const existingTask = tasks.find(
+      (t) =>
+        t.task.trim().toLowerCase() === task.trim().toLowerCase() &&
+        t.date === date
+    );
+
+    if (!task.trim() || !date.trim()) {
+      alert("Preencha a tarefa e a data.");
+      return;
+    }
 
     if (!existingTask) {
-      axios.post("http://localhost:3001/todos", newTodo).then(() => {
-        setTasks([...tasks, newTodo]);
+      noteService.post(newTask).then((createdTask) => {
+        setTasks([...tasks, createdTask]);
         setTask("");
         setDate("");
       });
@@ -55,9 +64,27 @@ function App() {
     setFilter(e.target.value);
   };
 
-  const filteredTask = tasks.filter((todo) =>
-    todo.task.toLowerCase().includes(filter.toLowerCase())
+  const filteredTask = tasks.filter((taskItem) =>
+    taskItem.task.toLowerCase().includes(filter.toLowerCase())
   );
+
+  const remove = (id: number) => {
+    const task = tasks.find((t) => t.id === id);
+    if (!task) return;
+
+    const confirm = window.confirm(`Deletar ${task.task}?`);
+    if (!confirm) return;
+
+    noteService
+      .remove(id)
+      .then(() => {
+        setTasks(tasks.filter((t) => t.id !== id));
+      })
+      .catch((error) => {
+        console.error(error);
+        setTasks(tasks.filter((t) => t.id !== id));
+      });
+  };
 
   return (
     <>
@@ -71,6 +98,7 @@ function App() {
         filter={filter}
         handleFilter={handleFilter}
         filteredTask={filteredTask}
+        remove={remove}
       />
     </>
   );

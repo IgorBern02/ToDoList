@@ -12,6 +12,7 @@ type TaskFormProps = {
   handleFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
   filter: string;
   filteredTask: Task[];
+  remove: (id: number) => void;
 };
 
 export const TaskForm = ({
@@ -23,6 +24,7 @@ export const TaskForm = ({
   handleFilter,
   filter,
   filteredTask,
+  remove,
 }: TaskFormProps) => (
   <form onSubmit={handleSubmit}>
     <AddTaskInput
@@ -40,6 +42,6 @@ export const TaskForm = ({
       value={filter}
     />
 
-    <Tasks filteredTask={filteredTask} />
+    <Tasks filteredTask={filteredTask} remove={remove} />
   </form>
 );
