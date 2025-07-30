@@ -1,13 +1,6 @@
 import { Button } from "./Button";
 import { Input } from "./Input";
-
-type Props = {
-  taskValue: string;
-  onTaskChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  dateValue: string;
-  onDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
-};
+import type { AddTaskInputProps } from "../types/input/input";
 
 export const AddTaskInput = ({
   taskValue,
@@ -15,7 +8,7 @@ export const AddTaskInput = ({
   dateValue,
   onDateChange,
   placeholder,
-}: Props) => {
+}: AddTaskInputProps) => {
   return (
     <>
       <section>

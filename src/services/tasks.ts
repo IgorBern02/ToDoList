@@ -1,22 +1,30 @@
 import axios from "axios";
-import type { Task } from "../components/types/task";
+import type { Task } from "../types/tasks/task";
 
-const baseUrl = "http://localhost:3001/tasks"; // ✅ Corrigido: "http"
+const baseUrl = "http://localhost:3001/tasks";
 
-const get = () => {
-  return axios.get(baseUrl).then((res) => res.data);
+const get = async (): Promise<Task[]> => {
+  const res = await axios.get<Task[]>(baseUrl);
+  return res.data;
 };
 
-const post = (newTask: Task) => {
-  return axios.post(baseUrl, newTask).then((res) => res.data);
+const post = async (newTask: Task): Promise<Task> => {
+  const res = await axios.post<Task>(baseUrl, newTask);
+  return res.data;
 };
 
-const remove = (id: number) => {
-  return axios.delete(`${baseUrl}/${id}`).then((res) => res.data);
+const put = async (id: string, updatedTask: Task): Promise<Task> => {
+  const res = await axios.put<Task>(`${baseUrl}/${id}`, updatedTask);
+  return res.data;
+};
+
+const remove = async (id: string): Promise<void> => {
+  await axios.delete(`${baseUrl}/${id}`);
 };
 
 export default {
   get,
   post,
+  put,
   remove,
 };

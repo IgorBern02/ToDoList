@@ -1,11 +1,5 @@
 import { Input } from "./Input";
-
-type InputProps = {
-  type: string;
-  placeholder: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+import type { InputProps } from "../types/input/input";
 
 export const FilterTaskInput = ({
   type,

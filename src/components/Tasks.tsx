@@ -1,11 +1,6 @@
-import type { Task } from "./types/task";
+import type { TasksProps } from "../types/tasks/task";
 
-type TasksProps = {
-  filteredTask: Task[];
-  remove: (id: number) => void;
-};
-
-export const Tasks = ({ filteredTask, remove }: TasksProps) => {
+export const Tasks = ({ filteredTask, remove, openEditModal }: TasksProps) => {
   return (
     <section>
       <ul>
@@ -16,11 +11,18 @@ export const Tasks = ({ filteredTask, remove }: TasksProps) => {
                 <span>{task.task}</span>
                 <span>{task.date}</span>
               </div>
-              <button onClick={() => remove(task.id)}>Remover</button>
+              <button type="button" onClick={() => remove(task.id)}>
+                Excluir
+              </button>
+              <button
+                onClick={() => openEditModal(task.id, task.task, task.date)}
+              >
+                Editar
+              </button>
             </li>
           ))
         ) : (
-          <li>No todo found</li>
+          <p>Nenhuma tarefa encontrada.</p>
         )}
       </ul>
     </section>

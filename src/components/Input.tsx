@@ -1,11 +1,6 @@
-type inputProps = {
-  type: string;
-  placeholder?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+import type { InputProps } from "../types/input/input";
 
-export const Input = ({ type, placeholder, value, onChange }: inputProps) => {
+export const Input = ({ type, placeholder, value, onChange }: InputProps) => {
   return (
     <>
       <input

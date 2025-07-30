@@ -1,19 +1,7 @@
-import type { Task } from "./types/task";
+import type { TaskFormProps } from "../types/tasks/task";
 import { AddTaskInput } from "./AddTaskInput";
 import { FilterTaskInput } from "./FilterTaskInput";
 import { Tasks } from "./Tasks";
-
-type TaskFormProps = {
-  handleSubmit: (e: React.FormEvent) => void;
-  task: string;
-  handleTaskChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  date: string;
-  handleDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  filter: string;
-  filteredTask: Task[];
-  remove: (id: number) => void;
-};
 
 export const TaskForm = ({
   handleSubmit,
@@ -25,6 +13,8 @@ export const TaskForm = ({
   filter,
   filteredTask,
   remove,
+  put,
+  openEditModal,
 }: TaskFormProps) => (
   <form onSubmit={handleSubmit}>
     <AddTaskInput
@@ -42,6 +32,11 @@ export const TaskForm = ({
       value={filter}
     />
 
-    <Tasks filteredTask={filteredTask} remove={remove} />
+    <Tasks
+      filteredTask={filteredTask}
+      remove={remove}
+      put={put}
+      openEditModal={openEditModal}
+    />
   </form>
 );
