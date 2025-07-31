@@ -18,9 +18,9 @@ export const TaskForm = ({
 }: TaskFormProps) => (
   <form
     onSubmit={handleSubmit}
-    className="bg-green-900 p-4 rounded-lg w-full mt-10 grid grid-cols-3 gap-10"
+    className=" p-4 rounded-lg w-full mt-10 grid grid-cols-3 gap-10"
   >
-    <section className="bg-red-500 p-3 rounded-lg w-full max-w-md mx-auto">
+    <section className="bg-slate-800 p-3 rounded-lg w-full max-w-md mx-auto">
       <AddTaskInput
         taskValue={task}
         onTaskChange={handleTaskChange}
@@ -30,7 +30,7 @@ export const TaskForm = ({
       />
     </section>
 
-    <section className="bg-red-700 p-3 rounded-lg  col-span-2 gap-5 flex flex-col rounded-lg">
+    <section className="bg-slate-800 p-3 rounded-lg  col-span-2 gap-5 flex flex-col rounded-lg">
       <FilterTaskInput
         type={"text"}
         placeholder={"Filtrar"}

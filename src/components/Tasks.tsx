@@ -13,9 +13,9 @@ export const Tasks = ({ filteredTask, remove, openEditModal }: TasksProps) => {
         filteredTask.map((task: any) => (
           <li
             key={task.id}
-            className="flex flex-col justify-between items-center bg-red-600 p-2 rounded-lg shadow-md "
+            className="flex flex-col justify-between items-center bg-slate-700 p-2 rounded-lg shadow-md "
           >
-            <div className="w-full h-auto flex  break-all gap-2 bg-blue-500 p-2 rounded-lg">
+            <div className="w-full h-auto flex  break-all gap-2 bg-slate-600 p-2 rounded-lg">
               <span className="w-1/2">{task.task}</span>
               <span className="w-1/2 text-right">
                 {formatDateToBR(task.date)}
@@ -23,14 +23,14 @@ export const Tasks = ({ filteredTask, remove, openEditModal }: TasksProps) => {
             </div>
             <div className="w-full flex flex-row gap-5 justify-around items-center mt-2">
               <button
-                className="w-full mt-2 bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition-colors"
+                className="w-full mt-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
                 type="button"
                 onClick={() => remove(task.id)}
               >
                 Excluir
               </button>
               <button
-                className="w-full mt-2 bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition-colors"
+                className="w-full mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                 onClick={() => openEditModal(task.id, task.task, task.date)}
               >
                 Editar

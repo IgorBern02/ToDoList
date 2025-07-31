@@ -8,7 +8,7 @@ export const FilterTaskInput = ({
   onChange,
 }: InputProps) => {
   return (
-    <section className="bg-blue-500 p-4 rounded-lg w-full mt-4 focus:outline-none focus:ring-1 focus:ring-red-700">
+    <section className=" p-4 rounded-lg w-full mt-4 focus:outline-none focus:ring-1 focus:ring-red-700">
       <Input
         type={type}
         placeholder={placeholder}
