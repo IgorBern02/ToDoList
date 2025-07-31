@@ -18,9 +18,19 @@ export const AddTaskInput = ({
         onChange={onTaskChange}
         min="2025-01-01"
         max="2030-12-31"
+        className="w-full p-2 rounded overflow-hidden text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
-      <Input type="date" value={dateValue} onChange={onDateChange} />
-      <Button text="Adicionar Tarefa" type="submit" />
+      <Input
+        type="date"
+        value={dateValue}
+        onChange={onDateChange}
+        className="w-full p-2 rounded overflow-hidden text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
+      />
+      <Button
+        text="Adicionar Tarefa"
+        type="submit"
+        className="bg-green-600 text-white px-4 py-2 overflow-hidden rounded outline-none hover:bg-green-700 focus:outline-none transition-colors duration-300"
+      />
     </section>
   );
 };

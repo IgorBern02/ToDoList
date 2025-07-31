@@ -14,6 +14,7 @@ export const FilterTaskInput = ({
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        className="w-full p-2 rounded overflow-hidden text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
     </section>
   );

@@ -5,6 +5,7 @@ export type InputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   min?: string;
   max?: string;
+  className?: string;
 };
 
 export type AddTaskInputProps = {
