@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import type { Task } from "./types/tasks/task";
 import { TaskForm } from "./components/TaskForm";
+import { EditModal } from "./components/EditModal";
 import noteService from "./services/tasks";
 
 function App() {
@@ -17,6 +18,26 @@ function App() {
       setTasks(initialTasks);
     });
   }, []);
+
+  const isValidDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    return date >= now && date.getFullYear() <= 2030;
+  };
+
+  const validateTask = (): boolean => {
+    if (!task.trim() || !date.trim()) {
+      alert("Preencha a tarefa e a data.");
+      return false;
+    }
+
+    if (!isValidDate(date)) {
+      alert("Por favor, insira uma data válida entre 2025 e 2030.");
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,10 +57,16 @@ function App() {
         t.date === date
     );
 
-    if (!task.trim() || !date.trim()) {
-      alert("Preencha a tarefa e a data.");
-      return;
-    }
+    // if (!task.trim() || !date.trim()) {
+    //   alert("Preencha a tarefa e a data.");
+    //   return;
+    // }
+
+    // if (!isValidDate(date)) {
+    //   alert("Por favor, insira uma data válida entre 2025 e 2030.");
+    //   return;
+    // }
+    if (!validateTask()) return;
 
     if (!existingTask) {
       noteService.post(newTask).then((createdTask) => {
@@ -67,7 +94,6 @@ function App() {
   );
 
   const openEditModal = (id: string, task: string, date: string) => {
-    // id como string
     setEditTaskId(id);
     setTask(task);
     setDate(date);
@@ -83,13 +109,13 @@ function App() {
     }
 
     const updatedTask: Task = {
-      id: editTaskId.toString(), // Garante que o ID seja string
+      id: editTaskId.toString(),
       task,
       date,
     };
 
     noteService
-      .put(updatedTask.id, updatedTask) // Envia o ID como string
+      .put(updatedTask.id, updatedTask)
       .then((returnedTask) => {
         setTasks(
           tasks.map((t) => (t.id === updatedTask.id ? returnedTask : t))
@@ -118,8 +144,8 @@ function App() {
   };
 
   return (
-    <>
-      <h1>Todo List</h1>
+    <div className="w-full flex flex-col items-center justify-start min-h-screen bg-slate-900 text-white overflow-x-hidden  ">
+      <h1 className="text-5xl font-bold text-center mt-10">Todo List</h1>
       <TaskForm
         handleSubmit={handleSubmit}
         task={task}
@@ -135,30 +161,17 @@ function App() {
       />
 
       {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Editar tarefa</h2>
-            <p>ID da tarefa: {editTaskId}</p>
-            <label>
-              Tarefa:
-              <input type="text" value={task} onChange={handleTodoChange} />
-            </label>
-            <label>
-              Data:
-              <input type="date" value={date} onChange={handleDateChange} />
-            </label>
-            <div style={{ marginTop: "1rem" }}>
-              <button type="button" onClick={handleUpdate}>
-                Salvar
-              </button>
-              <button type="button" onClick={() => setIsModalOpen(false)}>
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
+        <EditModal
+          taskId={editTaskId}
+          task={task}
+          date={date}
+          onTaskChange={handleTodoChange}
+          onDateChange={handleDateChange}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleUpdate}
+        />
       )}
-    </>
+    </div>
   );
 }
 
