@@ -6,21 +6,32 @@ import { EditModal } from "./components/EditModal";
 import { RemoveModal } from "./components/RemoveModal";
 import noteService from "./services/tasks";
 
+type ModalType = "edit" | "remove" | null;
+
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [task, setTask] = useState<string>("");
-  const [date, setDate] = useState<string>("");
+  const [form, setForm] = useState<{
+    id: string | null;
+    task: string;
+    date: string;
+  }>({
+    id: null,
+    task: "",
+    date: "",
+  });
   const [filter, setFilter] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editTaskId, setEditTaskId] = useState<string | null>(null);
+  const [modalType, setModalType] = useState<ModalType>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [isRemoveModal, setIsRemoveModal] = useState(false);
 
   useEffect(() => {
     noteService.get().then((initialTasks: Task[]) => {
       setTasks(initialTasks);
     });
   }, []);
+
+  const resetForm = () => {
+    setForm({ id: null, task: "", date: "" });
+  };
 
   const isValidDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -29,54 +40,77 @@ function App() {
   };
 
   const validateTask = (): boolean => {
-    if (!task.trim() || !date.trim()) {
+    if (!form.task.trim() || !form.date.trim()) {
       setErrorMessage("Preencha a tarefa e a data.");
       return false;
     }
 
-    if (!isValidDate(date)) {
+    if (!isValidDate(form.date)) {
       setErrorMessage("Por favor, insira uma data válida entre hoje e 2030.");
       return false;
     }
+
     setErrorMessage("");
     return true;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const maxId = Math.max(...tasks.map((t) => parseInt(t.id)), 0);
-    const newId = (maxId + 1).toString();
-
-    const newTask: Task = {
-      id: newId,
-      task,
-      date,
-    };
-
-    const existingTask = tasks.find(
-      (t) =>
-        t.task.trim().toLowerCase() === task.trim().toLowerCase() &&
-        t.date === date
-    );
-
     if (!validateTask()) return;
 
-    if (!existingTask) {
-      noteService.post(newTask).then((createdTask) => {
-        setTasks([...tasks, createdTask]);
-        setTask("");
-        setDate("");
-      });
+    const alreadyExists = tasks.some(
+      (t) =>
+        t.task.trim().toLowerCase() === form.task.trim().toLowerCase() &&
+        t.date === form.date
+    );
+
+    if (alreadyExists) return;
+
+    const newId = String(Math.max(...tasks.map((t) => +t.id), 0) + 1);
+    const newTask: Task = { id: newId, task: form.task, date: form.date };
+
+    noteService.post(newTask).then((createdTask) => {
+      setTasks([...tasks, createdTask]);
+      resetForm();
+    });
+  };
+
+  const handleUpdate = () => {
+    if (!form.id) return;
+
+    if (!form.task.trim() || !form.date.trim()) {
+      alert("Preencha a tarefa e a data.");
+      return;
     }
+
+    const updatedTask: Task = {
+      id: form.id,
+      task: form.task,
+      date: form.date,
+    };
+
+    noteService
+      .put(form.id, updatedTask)
+      .then((returnedTask) => {
+        setTasks(tasks.map((t) => (t.id === form.id ? returnedTask : t)));
+        setModalType(null);
+        resetForm();
+      })
+      .catch((error) => console.error("Erro:", error));
   };
 
-  const handleTodoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTask(e.target.value);
-  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
+  const remove = (id: string) => {
+    noteService
+      .remove(id)
+      .then(() => {
+        setTasks(tasks.filter((t) => t.id !== id));
+        setModalType(null);
+        resetForm();
+      })
+      .catch((error) => {
+        console.error(error);
+        setTasks(tasks.filter((t) => t.id !== id));
+      });
   };
 
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,99 +121,61 @@ function App() {
     taskItem.task.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const openEditModal = (id: string, task: string, date: string) => {
-    setEditTaskId(id);
-    setTask(task);
-    setDate(date);
-    setIsModalOpen(true);
-  };
-
-  const handleUpdate = () => {
-    if (!editTaskId) return;
-
-    if (!task.trim() || !date.trim()) {
-      alert("Preencha a tarefa e a data.");
-      return;
-    }
-
-    const updatedTask: Task = {
-      id: editTaskId.toString(),
-      task,
-      date,
-    };
-
-    noteService
-      .put(updatedTask.id, updatedTask)
-      .then((returnedTask) => {
-        setTasks(
-          tasks.map((t) => (t.id === updatedTask.id ? returnedTask : t))
-        );
-        setIsModalOpen(false);
-      })
-      .catch((error) => console.error("Erro:", error));
-  };
-
-  const openRemoveModal = (id: string, task: string) => {
-    setEditTaskId(id);
-    setTask(task);
-    setIsRemoveModal(true);
-  };
-
-  const remove = (id: string) => {
-    const task = tasks.find((t) => t.id === id);
-    if (!task) return;
-
-    noteService
-      .remove(id)
-      .then(() => {
-        setTasks(tasks.filter((t) => t.id !== id));
-        setIsRemoveModal(true);
-        setIsRemoveModal(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setTasks(tasks.filter((t) => t.id !== id));
-      });
-  };
-
   return (
     <div className="w-full flex flex-col items-center justify-start min-h-screen bg-slate-900 text-white overflow-x-hidden  ">
       <h1 className="text-5xl font-bold text-center mt-10">Todo List</h1>
       <TaskForm
         handleSubmit={handleSubmit}
-        task={task}
-        handleTaskChange={handleTodoChange}
-        date={date}
-        handleDateChange={handleDateChange}
+        task={form.task}
+        handleTaskChange={(e) => setForm({ ...form, task: e.target.value })}
+        date={form.date}
+        handleDateChange={(e) => setForm({ ...form, date: e.target.value })}
         filter={filter}
         handleFilter={handleFilter}
         filteredTask={filteredTask}
-        remove={remove}
-        // put={() => {}}
-        openEditModal={openEditModal}
-        openRemoveModal={openRemoveModal}
+        remove={(id) => {
+          const task = tasks.find((t) => t.id === id);
+          if (task) {
+            setForm({ id: task.id, task: task.task, date: "" });
+            setModalType("remove");
+          }
+        }}
+        openEditModal={(id, task, date) => {
+          setForm({ id, task, date });
+          setModalType("edit");
+        }}
+        openRemoveModal={(id, task) => {
+          setForm({ id, task, date: "" });
+          setModalType("remove");
+        }}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
       />
 
-      {isModalOpen && (
+      {modalType === "edit" && (
         <EditModal
-          taskId={editTaskId}
-          task={task}
-          date={date}
-          onTaskChange={handleTodoChange}
-          onDateChange={handleDateChange}
-          onClose={() => setIsModalOpen(false)}
+          taskId={form.id}
+          task={form.task}
+          date={form.date}
+          onTaskChange={(e) => setForm({ ...form, task: e.target.value })}
+          onDateChange={(e) => setForm({ ...form, date: e.target.value })}
+          onClose={() => {
+            setModalType(null);
+            resetForm();
+          }}
           onSave={handleUpdate}
         />
       )}
 
-      {isRemoveModal && (
+      {modalType === "remove" && (
         <RemoveModal
-          taskId={editTaskId}
-          task={task}
-          onClose={() => setIsRemoveModal(false)}
-          onRemove={remove}
+          taskId={form.id}
+          task={form.task}
+          onClose={() => {
+            setModalType(null);
+            resetForm();
+          }}
+          onRemove={(id) => remove(id)}
         />
       )}
     </div>
