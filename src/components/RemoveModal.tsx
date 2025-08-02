@@ -1,12 +1,6 @@
 import { Input } from "./Input";
 import { Button } from "./Button";
-
-type RemoveModalProps = {
-  taskId: string | null;
-  task: string;
-  onClose: () => void;
-  onRemove: (id: string) => void;
-};
+import type { RemoveModalProps } from "../types/remove/remove";
 
 export const RemoveModal = ({
   taskId,
@@ -35,7 +29,7 @@ export const RemoveModal = ({
           }}
           type="button"
           text="Excluir"
-          className="bg-green-600 text-white px-4 py-2 overflow-hidden rounded outline-none hover:bg-green-700 focus:outline-none transition-colors duration-300"
+          className="bg-red-600 text-white px-4 py-2 overflow-hidden rounded outline-none hover:bg-red-700 focus:outline-none transition-colors duration-300"
         />
         <Button
           onClick={onClose}

@@ -1,16 +1,6 @@
 import { Button } from "./Button";
 import { Input } from "./Input";
-
-type EditModalProps = {
-  taskId: string | null;
-  task: string;
-  date: string;
-  onTaskChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClose: () => void;
-  onSave: () => void;
-  className?: string;
-};
+import type { EditModalProps } from "../types/edit/edit";
 
 export const EditModal = ({
   taskId,

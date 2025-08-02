@@ -11,7 +11,7 @@ export const AddTaskInput = ({
   errorMessage,
 }: AddTaskInputProps) => {
   return (
-    <section className="flex flex-col gap-4 p-4 rounded-lg">
+    <section className="flex flex-col gap-4 p-4 rounded-lg ">
       <Input
         type="text"
         placeholder={placeholder}
@@ -25,7 +25,7 @@ export const AddTaskInput = ({
         type="date"
         value={dateValue}
         onChange={onDateChange}
-        className="w-full p-2 rounded overflow-hidden text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="w-full p-2 rounded overflow-hidden cursor-text text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}

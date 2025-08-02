@@ -1,9 +1,4 @@
-type buttonProps = {
-  text: string;
-  type: "submit" | "reset" | "button";
-  onClick?: () => void;
-  className?: string;
-};
+import type { buttonProps } from "../types/button/button";
 
 export const Button = ({ text, type, onClick, className }: buttonProps) => {
   return (
