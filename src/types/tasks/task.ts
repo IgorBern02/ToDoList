@@ -2,14 +2,15 @@ export type Task = {
   id: string;
   task: string;
   date: string;
+  isDone?: boolean;
 };
 
 export type TasksProps = {
   filteredTask: Task[];
   remove?: (id: string) => void;
-  // put: (id: string) => void;
   openEditModal: (id: string, task: string, date: string) => void;
   openRemoveModal: (id: string, task: string) => void;
+  toggleTaskDone: (taskId: string) => void;
 };
 
 export type TaskFormProps = {
@@ -22,9 +23,9 @@ export type TaskFormProps = {
   filter: string;
   filteredTask: Task[];
   remove?: (id: string) => void;
-  // put: (id: string) => void;
   openEditModal: (id: string, task: string, date: string) => void;
   openRemoveModal: (id: string, task: string) => void;
+  toggleTaskDone: (taskId: string) => void;
   errorMessage: string;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 };

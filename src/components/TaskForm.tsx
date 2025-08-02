@@ -15,6 +15,7 @@ export const TaskForm = ({
   openRemoveModal,
   // put,
   openEditModal,
+  toggleTaskDone,
   errorMessage,
 }: TaskFormProps) => (
   <form
@@ -44,6 +45,7 @@ export const TaskForm = ({
         filteredTask={filteredTask}
         openRemoveModal={openRemoveModal}
         openEditModal={openEditModal}
+        toggleTaskDone={toggleTaskDone}
       />
     </section>
   </form>

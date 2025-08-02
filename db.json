@@ -2,13 +2,15 @@
   "tasks": [
     {
       "id": "2",
-      "task": "Ir na praia 2h",
-      "date": "2025-11-20"
+      "task": "Ir na praia 5",
+      "date": "2025-11-20",
+      "isDone": true
     },
     {
       "id": "3",
-      "task": "asdad",
-      "date": "2030-11-20"
+      "task": "asad",
+      "date": "2030-11-20",
+      "isDone": true
     }
   ]
 }

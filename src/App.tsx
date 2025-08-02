@@ -67,7 +67,12 @@ function App() {
     if (alreadyExists) return;
 
     const newId = String(Math.max(...tasks.map((t) => +t.id), 0) + 1);
-    const newTask: Task = { id: newId, task: form.task, date: form.date };
+    const newTask: Task = {
+      id: newId,
+      task: form.task,
+      date: form.date,
+      isDone: false,
+    };
 
     noteService.post(newTask).then((createdTask) => {
       setTasks([...tasks, createdTask]);
@@ -121,6 +126,24 @@ function App() {
     taskItem.task.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const toggleTaskDone = (taskId: string) => {
+    const taskToUpdate = tasks.find((task) => task.id === taskId);
+    if (!taskToUpdate) return;
+
+    const updatedTask = { ...taskToUpdate, isDone: !taskToUpdate.isDone };
+
+    noteService
+      .put(taskId, updatedTask)
+      .then((returnedTask) => {
+        setTasks((prevTasks) =>
+          prevTasks.map((task) => (task.id === taskId ? returnedTask : task))
+        );
+      })
+      .catch((error) => {
+        console.error("Erro ao atualizar tarefa:", error);
+      });
+  };
+
   return (
     <div className="w-full flex flex-col items-center justify-start min-h-screen bg-slate-900 text-white overflow-x-hidden  ">
       <h1 className="text-5xl font-bold text-center mt-10">Todo List</h1>
@@ -148,6 +171,7 @@ function App() {
           setForm({ id, task, date: "" });
           setModalType("remove");
         }}
+        toggleTaskDone={toggleTaskDone}
         errorMessage={errorMessage}
         setErrorMessage={setErrorMessage}
       />
