@@ -2,7 +2,7 @@ export type InputProps = {
   type: string;
   placeholder?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   min?: string;
   max?: string;
   className?: string;
@@ -14,4 +14,5 @@ export type AddTaskInputProps = {
   dateValue: string;
   onDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
+  errorMessage: string;
 };

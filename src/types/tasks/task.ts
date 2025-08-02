@@ -6,9 +6,10 @@ export type Task = {
 
 export type TasksProps = {
   filteredTask: Task[];
-  remove: (id: string) => void;
-  put: (id: string) => void;
+  remove?: (id: string) => void;
+  // put: (id: string) => void;
   openEditModal: (id: string, task: string, date: string) => void;
+  openRemoveModal: (id: string, task: string) => void;
 };
 
 export type TaskFormProps = {
@@ -20,7 +21,10 @@ export type TaskFormProps = {
   handleFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
   filter: string;
   filteredTask: Task[];
-  remove: (id: string) => void;
-  put: (id: string) => void;
+  remove?: (id: string) => void;
+  // put: (id: string) => void;
   openEditModal: (id: string, task: string, date: string) => void;
+  openRemoveModal: (id: string, task: string) => void;
+  errorMessage: string;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 };

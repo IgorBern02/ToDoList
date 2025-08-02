@@ -12,9 +12,10 @@ export const TaskForm = ({
   handleFilter,
   filter,
   filteredTask,
-  remove,
-  put,
+  openRemoveModal,
+  // put,
   openEditModal,
+  errorMessage,
 }: TaskFormProps) => (
   <form
     onSubmit={handleSubmit}
@@ -27,10 +28,11 @@ export const TaskForm = ({
         dateValue={date}
         onDateChange={handleDateChange}
         placeholder="Adicionar tarefa"
+        errorMessage={errorMessage}
       />
     </section>
 
-    <section className="bg-slate-800 p-3 rounded-lg  col-span-2 gap-5 flex flex-col rounded-lg">
+    <section className="bg-slate-800 p-3 rounded-lg col-span-2 gap-5 flex flex-col ">
       <FilterTaskInput
         type={"text"}
         placeholder={"Filtrar"}
@@ -40,8 +42,8 @@ export const TaskForm = ({
 
       <Tasks
         filteredTask={filteredTask}
-        remove={remove}
-        put={put}
+        openRemoveModal={openRemoveModal}
+        // put={put}
         openEditModal={openEditModal}
       />
     </section>

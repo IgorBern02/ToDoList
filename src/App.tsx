@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import "./styles/App.css";
 import type { Task } from "./types/tasks/task";
 import { TaskForm } from "./components/TaskForm";
 import { EditModal } from "./components/EditModal";
+import { RemoveModal } from "./components/RemoveModal";
 import noteService from "./services/tasks";
 
 function App() {
@@ -12,6 +13,8 @@ function App() {
   const [filter, setFilter] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTaskId, setEditTaskId] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isRemoveModal, setIsRemoveModal] = useState(false);
 
   useEffect(() => {
     noteService.get().then((initialTasks: Task[]) => {
@@ -27,15 +30,15 @@ function App() {
 
   const validateTask = (): boolean => {
     if (!task.trim() || !date.trim()) {
-      alert("Preencha a tarefa e a data.");
+      setErrorMessage("Preencha a tarefa e a data.");
       return false;
     }
 
     if (!isValidDate(date)) {
-      alert("Por favor, insira uma data válida entre 2025 e 2030.");
+      setErrorMessage("Por favor, insira uma data válida entre hoje e 2030.");
       return false;
     }
-
+    setErrorMessage("");
     return true;
   };
 
@@ -43,10 +46,10 @@ function App() {
     e.preventDefault();
 
     const maxId = Math.max(...tasks.map((t) => parseInt(t.id)), 0);
-    const newId = (maxId + 1).toString(); // Convertendo para string
+    const newId = (maxId + 1).toString();
 
     const newTask: Task = {
-      id: newId, // Agora é string
+      id: newId,
       task,
       date,
     };
@@ -57,15 +60,6 @@ function App() {
         t.date === date
     );
 
-    // if (!task.trim() || !date.trim()) {
-    //   alert("Preencha a tarefa e a data.");
-    //   return;
-    // }
-
-    // if (!isValidDate(date)) {
-    //   alert("Por favor, insira uma data válida entre 2025 e 2030.");
-    //   return;
-    // }
     if (!validateTask()) return;
 
     if (!existingTask) {
@@ -125,17 +119,22 @@ function App() {
       .catch((error) => console.error("Erro:", error));
   };
 
+  const openRemoveModal = (id: string, task: string) => {
+    setEditTaskId(id);
+    setTask(task);
+    setIsRemoveModal(true);
+  };
+
   const remove = (id: string) => {
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
-
-    const confirm = window.confirm(`Deletar ${task.task}?`);
-    if (!confirm) return;
 
     noteService
       .remove(id)
       .then(() => {
         setTasks(tasks.filter((t) => t.id !== id));
+        setIsRemoveModal(true);
+        setIsRemoveModal(false);
       })
       .catch((error) => {
         console.error(error);
@@ -156,8 +155,11 @@ function App() {
         handleFilter={handleFilter}
         filteredTask={filteredTask}
         remove={remove}
-        put={() => {}}
+        // put={() => {}}
         openEditModal={openEditModal}
+        openRemoveModal={openRemoveModal}
+        errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
       />
 
       {isModalOpen && (
@@ -169,6 +171,15 @@ function App() {
           onDateChange={handleDateChange}
           onClose={() => setIsModalOpen(false)}
           onSave={handleUpdate}
+        />
+      )}
+
+      {isRemoveModal && (
+        <RemoveModal
+          taskId={editTaskId}
+          task={task}
+          onClose={() => setIsRemoveModal(false)}
+          onRemove={remove}
         />
       )}
     </div>

@@ -8,6 +8,7 @@ export const AddTaskInput = ({
   dateValue,
   onDateChange,
   placeholder,
+  errorMessage,
 }: AddTaskInputProps) => {
   return (
     <section className="flex flex-col gap-4 p-4 rounded-lg">
@@ -26,6 +27,9 @@ export const AddTaskInput = ({
         onChange={onDateChange}
         className="w-full p-2 rounded overflow-hidden text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
+
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
       <Button
         text="Adicionar Tarefa"
         type="submit"
