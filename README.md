@@ -1,69 +1,69 @@
-# React + TypeScript + Vite
+# 📝 ToDoList
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Lista de tarefas desenvolvida com **React**, **TypeScript** e **Tailwind CSS**, com foco em praticar os fundamentos de uma aplicação CRUD. O projeto utiliza uma API local simulada com `json-server` para persistência dos dados.
 
-Currently, two official plugins are available:
+## 🚀 Demonstração
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔗 Acesse o projeto online: [ToDoList - GitHub Pages](https://igorbern02.github.io/ToDoList/)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Funcionalidades
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- ✅ Adicionar novas tarefas
+- 🔍 Filtrar tarefas por texto
+- ✏️ Editar tarefas existentes (com modal)
+- 🗑️ Remover tarefas (com confirmação)
+- 📆 Adicionar data às tarefas
+- 💾 Persistência via API local (json-server)
+- 📱 Interface responsiva
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ Tecnologias utilizadas
+
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vite](https://vitejs.dev/)
+- [json-server](https://github.com/typicode/json-server)
+
+---
+
+## 📦 Instalação local
+
+```bash
+# Clone o repositório
+git clone https://github.com/IgorBern02/ToDoList.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Acesse a pasta
+cd ToDoList
 ```
+
+```bash
+# Instale as dependências
+npm install
+```
+
+```bash
+# Inicie o json-server em outra aba do terminal
+npx json-server --watch db.json --port 3001
+```
+
+```bash
+# Inicie a aplicação
+npm run dev
+```
+
+⚙️ Deploy
+O projeto foi publicado via GitHub Pages utilizando a biblioteca gh-pages. O build é feito com:
+
+```bash
+npm run deploy
+```
+
+🙋‍♂️ Autor
+Feito com dedicação por Igor Bernardes
+
