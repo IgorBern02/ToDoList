@@ -5,8 +5,7 @@ import { TaskForm } from "./components/TaskForm";
 import { EditModal } from "./components/EditModal";
 import { RemoveModal } from "./components/RemoveModal";
 import noteService from "./services/tasks";
-
-type ModalType = "edit" | "remove" | null;
+import type { ModalType } from "./types/modal/modal";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
