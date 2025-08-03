@@ -1,16 +1,3 @@
 {
-  "tasks": [
-    {
-      "id": "2",
-      "task": "Ir na praia 5",
-      "date": "2025-11-20",
-      "isDone": true
-    },
-    {
-      "id": "3",
-      "task": "asad",
-      "date": "2030-11-20",
-      "isDone": true
-    }
-  ]
+  "tasks": []
 }

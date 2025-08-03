@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Task } from "../types/tasks/task";
 
-const baseUrl = "http://localhost:3001/tasks";
+const baseUrl = "https://todolist-backend-ppp3.onrender.com/tasks";
 
 const get = async (): Promise<Task[]> => {
   const res = await axios.get<Task[]>(baseUrl);
